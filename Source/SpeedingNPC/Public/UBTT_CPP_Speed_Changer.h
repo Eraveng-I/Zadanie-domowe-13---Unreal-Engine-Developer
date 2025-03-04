@@ -13,7 +13,8 @@ UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SPEEDINGNPC_API UUBTT_CPP_Speed_Changer : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
-	
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	FBlackboardKeySelector OrderToGoAround;
 
 	public:
 		UUBTT_CPP_Speed_Changer();

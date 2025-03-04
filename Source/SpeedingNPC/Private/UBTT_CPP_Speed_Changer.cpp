@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 UUBTT_CPP_Speed_Changer::UUBTT_CPP_Speed_Changer()
@@ -14,17 +15,37 @@ UUBTT_CPP_Speed_Changer::UUBTT_CPP_Speed_Changer()
 	NodeName = "Change Movement Speed";
 
 	speed = 200;
-
-	
 }
 
 EBTNodeResult::Type UUBTT_CPP_Speed_Changer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	//int* KindOfAction = Cast<int>(OwnerComp.GetBlackboardComponent()->GetV)
-	//int* KindOfAction = OwnerComp.GetBlackboardComponent()->execGetValueAsInt(OrderToGoAround.SelectedKeyName);
-	int* KindOfAction = Cast <int>( OwnerComp.GetBlackboardComponent()->GetValueAsInt(OrderToGoAround.SelectedKeyName));
+	int KindOfAction = OwnerComp.GetBlackboardComponent()->GetValueAsInt(TEXT("OrderToGoAround"));
 
-	return EBTNodeResult::Type();
+	// Pobranie AIController i Character
+	AAIController* AIController = OwnerComp.GetAIOwner();
+	if (AIController)
+	{
+		ACharacter* Character = Cast<ACharacter>(AIController->GetPawn());
+		if (Character)
+		{
+			// Zmiana prêdkoœci
+			if (KindOfAction == 0)
+			{
+				Character->GetCharacterMovement()->MaxWalkSpeed = 400;
+			}
+			
+			if (KindOfAction == 1)
+			{
+				Character->GetCharacterMovement()->MaxWalkSpeed = 1200;
+			}
+
+			// Zwrócenie sukcesu
+			return EBTNodeResult::Succeeded;
+		}
+	}
+
+	// Zwrócenie porazki, jeœli nie znalziono postaci
+	return EBTNodeResult::Failed;
 }
 
 
