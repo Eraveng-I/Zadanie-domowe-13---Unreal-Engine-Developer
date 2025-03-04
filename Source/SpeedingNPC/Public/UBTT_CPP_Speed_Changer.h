@@ -16,5 +16,12 @@ class SPEEDINGNPC_API UUBTT_CPP_Speed_Changer : public UBTTask_BlackboardBase
 	
 
 	public:
+		UUBTT_CPP_Speed_Changer();
+
 		virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+	private:
+		float speed;
+
+		
 };
